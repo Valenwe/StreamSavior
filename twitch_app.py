@@ -190,7 +190,7 @@ class TwitchViewerList():
     def export_to_json(self, filename: str):
         with open(filename, "w") as file:
             file.write(json.dumps([elem.to_json() for elem in self.viewers]))
-            logging.info("Successfully saved the viewers")
+            print("Successfully saved the viewers")
 
 
 class Bot(commands.Bot):
