@@ -7,10 +7,15 @@ This Python program uses the Twitch Application API to communicate on your strea
 1. You must create a Twitch application on the [Twitch Dev website](https://dev.twitch.tv/console/apps/).
 2. Put `https://twitchapps.com/tmi/` as the redirection OAuth URL.
 3. Get your client ID from your application's parameter view
-4. Fill the empty fields in `config.json` file (*channel*, *bot_client_id*, *bot_secret*). **Leave the irc_token field empty**. You may also change the other parameters if you want to (check the config file explanation).
-5. Launch the program for the first time `python twitch_app.py`, and follow the given link printed on the console. Get your **IRC token** from there, and put it in `config.json`.
+4. Fill the empty fields in `config.json` file (*channel*) and `creds.json` (*bot_client_id* & *bot_secret*). **Leave the irc_token field empty**. You may also change the other parameters if you want to (check the config file explanation).
+5. Launch the program for the first time `python twitch_app.py`, and follow the given link printed on the console. Get your **IRC token** from there, and put it in `creds.json`.
 6. Run the program with `python twitch_app.py`. Add any [argument](#usage) you want.
 7. Finally, to be able to see and hear elements on the stream, you have to add the Web source on your streaming software (OBS studio for me). The url is by default `http://localhost:5000`, but you can change the port in the script's arguments. **If the webpage does not work, you must refresh the Source.**
+
+#### **NB:**
+- When you stop the bot, it saves all your users with their money in `viewers.json`, so that when you launch it again, it will get back the data for each viewer.
+- The bot name doesn't seem to be properly used (problem comes from the Python module used). When the bot connects, it uses your Nickname instead. But this does not change the bot's behaviour.
+- There are errors displayed when you stop the bot. Don't worry, they come from the looping routines used by the Bot. The most important thing is that your viewers are correctly saved in `viewers.json` (confirmation message should be before the said errors).
 
 ## Usage
 

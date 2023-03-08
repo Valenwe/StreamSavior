@@ -3,11 +3,7 @@
    "channel": "",
    "prefix": "!",
 
-   "bot_client_id": "",
-   "bot_secret": "",
-   "irc_token": "",
-
-   "regular_message": "Welcome to someone's stream! You may use !commands to get a list of possible commands :)",
+   "regular_message": "Welcome to Valenwe's stream! You may use !commands to get a list of possible commands :)",
    "regular_message_frequency": 15,
 
    "passive_earn": 25,

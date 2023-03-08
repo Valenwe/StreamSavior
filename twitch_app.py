@@ -4,15 +4,15 @@
 # Text generated from https://textkool.com/en/ascii-art-generator?hl=default&vl=default&font=Pagga
 
 import json
-import requests
-from twitchio import Message, Channel
-from twitchio.ext import commands, routines
 import datetime
 import logging
 import os
 import threading
 import argparse
 import sys
+import requests
+from twitchio import Message, Channel
+from twitchio.ext import commands, routines
 
 # ░█▀▄░█▀█░█▀▀░▀█▀░█▀▀░█▀▀
 # ░█▀▄░█▀█░▀▀█░░█░░█░░░▀▀█
@@ -30,19 +30,21 @@ if args["verbose"]:
 elif args["vverbose"]:
     logging.basicConfig(level=logging.DEBUG)
 
-# Get config file
+# Get JSON files
 try:
     with open("config.json", "r") as file:
         config = json.loads(file.read())
+    with open("creds.json", "r") as file:
+        creds = json.loads(file.read())
 except:
-    logging.error("Could not read config file")
+    logging.error("Could not read config / creds file")
     exit()
 
 # First time launching the program
-if len(config["irc_token"]) == 0:
+if len(creds["irc_token"]) == 0:
     r = requests.get("https://id.twitch.tv/oauth2/authorize",
                      params={"response_type": "code",
-                             "client_id": config["bot_client_id"],
+                             "client_id": creds["bot_client_id"],
                              "redirect_uri": "https://twitchapps.com/tmi/",
                              "scope": "chat:edit+chat:read",
                              })
@@ -55,23 +57,32 @@ if len(config["irc_token"]) == 0:
 
 @routines.routine(minutes=int(config["regular_message_frequency"]))
 async def message(channel: Channel, str: str):
-    # If the last messages are the same message we want to send
-    for i in range(1, 4):
-        if len(bot.messages) >= i and bot.messages[-i]["content"] == str:
-            return
+    try:
+        # If the last messages are the same message we want to send
+        for i in range(1, 4):
+            if len(bot.messages) >= i and bot.messages[-i]["content"] == str:
+                return
 
-    await channel.send(str)
+        await channel.send(str)
+    except Exception as e:
+        logging.debug(e)
 
 @routines.routine(seconds=int(config["passive_earn_frequency"]))
 async def passive_earn():
-    users = set()
-    for msg in bot.messages:
-        if msg["author"] != None:
-            users.add(msg["author"])
+    try:
+        users = set()
+        for msg in bot.messages:
+            if msg["author"] != None:
+                users.add(msg["author"])
 
-    user: TwitchViewer
-    for user in users:
-        viewerlist.get(user).add_money(config["passive_earn"])
+        user: TwitchViewer
+        for user in users:
+            viewerlist.get(user).add_money(config["passive_earn"])
+    except Exception as e:
+        logging.debug(e)
+
+# Will store all routines
+bot_routines = [message, passive_earn]
 
 def launch_flask():
     """ launch Flask server with the same argv than the main python script
@@ -196,9 +207,9 @@ class TwitchViewerList():
 class Bot(commands.Bot):
     def __init__(self):
         super().__init__(
-            token=config["irc_token"],
-            client_id=config["bot_client_id"],
-            client_secret=config["bot_secret"],
+            token=creds["irc_token"],
+            client_id=creds["bot_client_id"],
+            client_secret=creds["bot_secret"],
             nick=config["bot_name"],
             prefix=config["prefix"],
             initial_channels=[config["channel"]]
@@ -253,8 +264,13 @@ class Bot(commands.Bot):
         logging.info(f'Bot user id is {self.user_id}')
 
         # Start routines
-        message.start(self.get_channel(config["channel"]), config["regular_message"])
-        passive_earn.start()
+        for routine in bot_routines:
+            if routine == message:
+                new_routine = routine.start(self.get_channel(config["channel"]), config["regular_message"])
+            else:
+                new_routine = passive_earn.start()
+
+            bot_routines[bot_routines.index(routine)] = new_routine
 
     async def event_message(self, message: Message) -> None:
         """ Register any message, and handle commands if there is an author
@@ -341,8 +357,10 @@ if __name__ == '__main__':
 
     # Save & stop all processes
     viewerlist.export_to_json("viewers.json")
-    message.stop()
-    passive_earn.stop()
+
     flask_server.join()
+
+    for routine in bot_routines:
+        routine.cancel()
 
     print("Process - ended")
