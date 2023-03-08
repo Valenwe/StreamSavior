@@ -29,6 +29,8 @@ options:
   -vv, --mega-verbose   adds maximum verbosity
 ```
 
+![Example](example.gif)
+
 ## Config file explanation (or how can you change things)
 
 ### Messages

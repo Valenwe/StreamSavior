@@ -16,7 +16,8 @@ if args["verbose"]:
     logging.basicConfig(level=logging.INFO)
 elif args["vverbose"]:
     logging.basicConfig(level=logging.DEBUG)
-
+else:
+    logging.basicConfig(level=logging.ERROR)
 
 # Define main variables
 app = Flask(__name__)
