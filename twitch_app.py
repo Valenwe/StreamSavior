@@ -46,7 +46,6 @@ if len(creds["irc_token"]) == 0:
                      params={"response_type": "code",
                              "client_id": creds["bot_client_id"],
                              "redirect_uri": "https://twitchapps.com/tmi/",
-                             "scope": "chat:edit+chat:read",
                              })
     print(f"You must follow this url to get an IRC token: {r.url}")
     exit()
