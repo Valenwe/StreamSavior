@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8" />
+      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <title>Twitch Bot API</title>
+      <script src="jquery-3.6.3.min.js"></script>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <style>
+         #content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+         }
+
+         img {
+            width: 90vw;
+            height: 90vh;
+         }
+
+         h1 {
+            font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+            text-shadow: 2px 2px 2px black;
+            color: bisque;
+            font-size: 60px;
+            position: absolute;
+            top: 75%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+         }
+
+         .fade {
+            opacity: 1;
+            animation: fade 1s linear;
+         }
+
+         @keyframes fade {
+            0% {
+               opacity: 0;
+            }
+            100% {
+               opacity: 1;
+            }
+         }
+      </style>
+   </head>
+   <body>
+      <div id="content"></div>
+   </body>
+   <script>
+      let data_displayed;
+      function executeQuery() {
+         $.ajax({
+            url: "http://localhost:5000/api",
+            type: "post",
+            data: { source: "web" },
+            success: function (data) {
+               // filter empty values
+               if ((data.length = 0)) return;
+
+               if (data_displayed == undefined || data_displayed != data) {
+                  // change the last data displayed value
+                  data_displayed = data;
+                  data = $(data);
+
+                  // filter empty src
+                  if ((data.find("img").attr("src").length = 0)) return;
+
+                  // add class, and add the html
+                  data.addClass("fade");
+                  $("#content").html(data);
+
+                  // play sound if specified
+                  if (data.attr("audio")) {
+                     $("<audio>", { src: data.attr("audio"), autoplay: "true" })[0].play();
+                  }
+
+                  // remove html timeout
+                  setTimeout(() => {
+                     $("#content").empty();
+                  }, 5500);
+               }
+            }
+         });
+      }
+
+      $(document).ready(function () {
+         setInterval(executeQuery, 1000);
+      });
+   </script>
+</html>

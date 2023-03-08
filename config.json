@@ -1,0 +1,38 @@
+{
+   "bot_name": "stream_savior",
+   "channel": "",
+   "prefix": "!",
+
+   "bot_client_id": "",
+   "bot_secret": "",
+   "irc_token": "",
+
+   "regular_message": "Welcome to someone's stream! You may use !commands to get a list of possible commands :)",
+   "regular_message_frequency": 15,
+
+   "passive_earn": 25,
+   "passive_earn_frequency": 10,
+
+   "earn_amount": 500,
+   "earn_frequency": 5,
+
+   "gif_price": 500,
+
+   "audio_commands": {
+      "anya": {
+         "price": 1000,
+         "gif": "https://media.giphy.com/media/37Md3lHS7s6k2tHIp7/giphy.gif",
+         "audio": "anya.mp3"
+      },
+      "wave": {
+         "price": 200,
+         "gif": "https://media.giphy.com/media/3o6Zt6i5lQzcNnej9C/giphy.gif",
+         "audio": "hello.mp3"
+      },
+      "yipi": {
+         "price": 500,
+         "gif": "https://media.giphy.com/media/krewXUB6LBja/giphy.gif",
+         "audio": "yipi.mp3"
+      }
+   }
+}
