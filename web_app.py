@@ -58,6 +58,9 @@ def receive_data():
 
         # add div attributes
         html = "<div"
+        if 'date' in current_data.keys():
+            html += f" date='{current_data['date']}'"
+
         if 'audio' in current_data.keys() and len(current_data['audio']) > 0:
             html += f" audio='{current_data['audio']}'"
         html += "> "

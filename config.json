@@ -6,7 +6,7 @@
    "regular_message": "Welcome to Valenwe's stream! You may use !commands to get a list of possible commands :)",
    "regular_message_frequency": 15,
 
-   "passive_earn": 25,
+   "passive_earn": 10,
    "passive_earn_frequency": 10,
 
    "earn_amount": 500,

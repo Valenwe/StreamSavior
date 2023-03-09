@@ -11,6 +11,7 @@ import threading
 import argparse
 import sys
 import requests
+from datetime import datetime
 from twitchio import Message, Channel
 from twitchio.ext import commands, routines
 
@@ -236,7 +237,7 @@ class Bot(commands.Bot):
         args: list[str] = ctx.message.content.split()
         del args[0]
 
-        data = {"source": "tchat", "user": user.displayname}
+        data = {"source": "tchat", "user": user.displayname, "date": str(datetime.now().timestamp())}
 
         if command == "gif":
             data["data"] = args[0]

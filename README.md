@@ -10,7 +10,7 @@ This Python program uses the Twitch Application API to communicate on your strea
 4. Fill the empty fields in `config.json` file (*channel*) and `creds.json` (*bot_client_id* & *bot_secret*). **Leave the irc_token field empty**. You may also change the other parameters if you want to (check the config file explanation).
 5. Launch the program for the first time `python twitch_app.py`, and follow the given link printed on the console. Get your **IRC token** from there, and put it in `creds.json`.
 6. Run the program with `python twitch_app.py`. Add any [argument](#usage) you want.
-7. Finally, to be able to see and hear elements on the stream, you have to add the Web source on your streaming software (OBS studio for me). The url is by default `http://localhost:5000`, but you can change the port in the script's arguments. **If the webpage does not work, you must refresh the Source.**
+7. Finally, to be able to see and hear elements on the stream, you have to add the Web source on your streaming software (OBS studio for me). The url is by default `http://localhost:5000`, but you can change the port in the script's arguments. **If the webpage does not work, you must refresh the Source. Most of the time, you must do it after launching the Bot.**
 
 #### **NB:**
 - When you stop the bot, it saves all your users with their money in `viewers.json`, so that when you launch it again, it will get back the data for each viewer.
