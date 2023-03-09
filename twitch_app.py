@@ -11,7 +11,7 @@ import threading
 import argparse
 import sys
 import requests
-from datetime import datetime
+from datetime import datetime, timedelta
 from twitchio import Message, Channel
 from twitchio.ext import commands, routines
 
@@ -121,7 +121,7 @@ class TwitchViewer():
         self.money -= amount
         return amount
 
-    def can_earn(self, duration: str, target_date=datetime.datetime.now()):
+    def can_earn(self, duration: str, target_date=datetime.now()):
         """
         duration is the number of minutes to check
         """
@@ -129,13 +129,13 @@ class TwitchViewer():
         if self.last_earn == None:
             return True
 
-        duration = datetime.timedelta(minutes=int(duration))
-        end_duration_date: datetime.datetime = (datetime.datetime.strptime(
+        duration = timedelta(minutes=int(duration))
+        end_duration_date: datetime = (datetime.strptime(
             self.last_earn, TwitchViewer.date_format) + duration)
         return target_date.timestamp() >= end_duration_date.timestamp()
 
     def reset_last(self):
-        self.last_earn = datetime.datetime.now().strftime(TwitchViewer.date_format)
+        self.last_earn = datetime.now().strftime(TwitchViewer.date_format)
 
     def set_displayname(self, displayname: str):
         self.displayname = displayname
