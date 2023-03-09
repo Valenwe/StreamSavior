@@ -12,12 +12,13 @@ parser.add_argument("-vv", "--mega-verbose", dest="vverbose",
                     help="adds maximum verbosity", action="store_true")
 args = parser.parse_args().__dict__
 
+log = logging.getLogger('werkzeug')
 if args["verbose"]:
-    logging.basicConfig(level=logging.INFO)
+    log.setLevel(logging.INFO)
 elif args["vverbose"]:
-    logging.basicConfig(level=logging.DEBUG)
+    log.setLevel(logging.DEBUG)
 else:
-    logging.basicConfig(level=logging.ERROR)
+    log.setLevel(logging.ERROR)
 
 # Define main variables
 app = Flask(__name__)
